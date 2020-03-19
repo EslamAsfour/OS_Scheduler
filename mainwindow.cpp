@@ -195,6 +195,14 @@ void MainWindow::on_pushButton_Add_clicked()
        qDebug() << var->text();
        var->setText("");
    }
+   else if (type == "RoundRobin")
+   {
+        if (var->text() != "")
+        {
+            Q= var->text().toInt();
+            var->setEnabled(false);
+        }
+   }
     // Confirm With a Msg
     QMessageBox::information(this,"Process Added",msg);
     // Clear the LineEdit for a New Input
