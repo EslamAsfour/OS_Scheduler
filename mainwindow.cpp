@@ -51,7 +51,7 @@ void MainWindow::Display()
 
             // Widget to set Width and Height
             auto wid = new QWidget();
-            wid->setFixedWidth(Gap[i]*10);
+            wid->setFixedWidth((Gap[i]*10)+5);
             wid->setLayout(box);
 
            ui->GanttChartLayOut->setAlignment(Qt::AlignHCenter);
@@ -78,7 +78,7 @@ void MainWindow::Display()
 
             // Widget to set Width and Height
             auto wid = new QWidget();
-            wid->setFixedWidth(BurstTime[i]*10);
+            wid->setFixedWidth((BurstTime[i]*10)+5);
             wid->setLayout(box);
 
            ui->GanttChartLayOut->setAlignment(Qt::AlignHCenter);
