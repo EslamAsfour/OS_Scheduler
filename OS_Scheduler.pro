@@ -19,12 +19,16 @@ SOURCES += \
     fcfs.cpp \
     main.cpp \
     mainwindow.cpp \
-    prioritynone.cpp
+    prioritynone.cpp \
+    roundrobin.cpp \
+    sjf_nonprim.cpp
 
 HEADERS += \
     fcfs.h \
     mainwindow.h \
-    prioritynone.h
+    prioritynone.h \
+    roundrobin.h \
+    sjf_nonprim.h
 
 FORMS += \
     mainwindow.ui

@@ -8,9 +8,11 @@
 
 #include "fcfs.h"
 #include "prioritynone.h"
-
+#include "sjf_nonprim.h"
+#include "roundrobin.h"
 
 /* ---------------------------------------------------- */
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -96,6 +98,7 @@ void MainWindow::add_Input(QString proc, int Arr, int Burst)
 
 
 // Function to Go to the next page and prepare the optional LineEdits Based on the Type
+
 void MainWindow::on_ToIndex_1_clicked()
 {
     if(type == "FCFS")
@@ -133,6 +136,7 @@ void MainWindow::on_pushButton_ToIndex_2_clicked()
 {
     ui->tabs->setCurrentIndex(2);
     int size = process.size();
+
     if(type == "FCFS")
     {
         FCFS::find_total_average_time(process,ArrivalTime,BurstTime,size,WaitingTime,TurnAroundTime,AvgWaitingTime,AvgTurnAroundTime);
@@ -149,12 +153,25 @@ void MainWindow::on_pushButton_ToIndex_2_clicked()
     }
     else if (type == "SJF_Non")
     {
-        PriorityNone:: sort_process_sjf_nonpre(process,BurstTime, ArrivalTime, size);
+        SJF_NonPrim::sort_process_sjf_nonpre(process,BurstTime, ArrivalTime, size);
         PriorityNone::calc_waiting_starting_gap(BurstTime, ArrivalTime, StartingTime, WaitingTime, Gap, size);
         AvgWaitingTime = PriorityNone::waiting_avg(WaitingTime, size);
         AvgTurnAroundTime = PriorityNone::turnaround_avg(BurstTime, WaitingTime, size);
         Display();
     }
+    else if (type == "RoundRobin")
+    {
+       Gap.resize(size);
+       StartingTime.resize(size);
+       int Original_Size = size;
+       QVector<QString> Fixed_Process = process;
+
+       Round_Robin::RR(process, ArrivalTime, BurstTime, StartingTime, Gap, size, Q);
+       AvgWaitingTime = Round_Robin::AVG_waiting(ArrivalTime, StartingTime, size);
+       AvgTurnAroundTime = Round_Robin::AVG_TurnAround(process, Fixed_Process, ArrivalTime, BurstTime, StartingTime, size, Original_Size);
+       Display();
+    }
+
 }
 
 void MainWindow::on_pushButton_Add_clicked()
