@@ -42,6 +42,10 @@ private slots:
 
     void on_SJF_Non_clicked();
 
+    void on_SJF_Prim_clicked();
+    
+    void on_Priority_Prim_clicked();
+    
 private:
     Ui::MainWindow *ui;
 

@@ -21,7 +21,8 @@ SOURCES += \
     mainwindow.cpp \
     prioritynone.cpp \
     roundrobin.cpp \
-    sjf_nonprim.cpp
+    sjf_nonprim.cpp \
+    srtf.cpp
 
 HEADERS += \
     fcfs.h \
