@@ -11,6 +11,7 @@
 #include "sjf_nonprim.h"
 #include "roundrobin.h"
 #include "srtf.h"
+#include "priority_prim.h"
 
 /* ---------------------------------------------------- */
 
@@ -52,8 +53,10 @@ void MainWindow::Display()
 
             // Widget to set Width and Height
             auto wid = new QWidget();
+
             wid->setFixedWidth((Gap[i]*10)+10);
             wid->setLayout(box);
+            ToBeDeleted.push_back(wid);
 
            ui->GanttChartLayOut->setAlignment(Qt::AlignHCenter);
            ui->GanttChartLayOut->addWidget(wid,0);
@@ -81,6 +84,7 @@ void MainWindow::Display()
             auto wid = new QWidget();
             wid->setFixedWidth((BurstTime[i]*10)+10);
             wid->setLayout(box);
+            ToBeDeleted.push_back(wid);
 
            ui->GanttChartLayOut->setAlignment(Qt::AlignHCenter);
            ui->GanttChartLayOut->addWidget(wid,0);
@@ -142,17 +146,22 @@ void MainWindow::on_ToIndex_1_clicked()
     else if (type == "Priority_Prim")
     {
              ui->tabs->setCurrentIndex(1);
+             ui->Input->findChild<QLabel*>("Dep_Label")->show();
+             ui->Input->findChild<QLineEdit*>("lineEdit_Dep")->show();
              ui->Input->findChild<QLabel*>("Dep_Label")->setText("Priority ");
     }
     else if (type == "PriorityNone")
     {
        ui->tabs->setCurrentIndex(1);
+       ui->Input->findChild<QLabel*>("Dep_Label")->show();
+       ui->Input->findChild<QLineEdit*>("lineEdit_Dep")->show();
        ui->Input->findChild<QLabel*>("Dep_Label")->setText("Priority ");
     }
     else if (type == "RoundRobin")
     {
         ui->tabs->setCurrentIndex(1);
-        type = "RoundRobin";
+        ui->Input->findChild<QLabel*>("Dep_Label")->show();
+        ui->Input->findChild<QLineEdit*>("lineEdit_Dep")->show();
         ui->Input->findChild<QLabel*>("Dep_Label")->setText("Q ");
     }
     else if(type == "SJF_Non" || type == "SJF_Prim")
@@ -165,6 +174,7 @@ void MainWindow::on_ToIndex_1_clicked()
 // Function to call the exact class based on the type
 void MainWindow::on_pushButton_ToIndex_2_clicked()
 {
+
     ui->tabs->setCurrentIndex(2);
     int size = process.size();
 
@@ -216,6 +226,12 @@ void MainWindow::on_pushButton_ToIndex_2_clicked()
     }
     else if (type == "Priority_Prim")
     {
+        QVector<priority_Preemptive> sr;
+        priority_pree(process, BurstTime, ArrivalTime, Priority, StartingTime, sr);
+        Gap = ArrivalTime;
+        AvgTurnAroundTime = priority_pree_Turn_Around(sr);
+        AvgWaitingTime = priority_pree_Waiting_time(sr);
+        Display();
     }
 
 }
@@ -303,38 +319,45 @@ void MainWindow::on_pushButton_Add_clicked()
 void MainWindow::on_FCFS_clicked()
 {
     type="FCFS";
+     qDebug() << type;
 }
 
 void MainWindow::on_RoundRobin_clicked()
 {
     type="RoundRobin";
+    qDebug() << type;
 }
 
 void MainWindow::on_PriorityNone_clicked()
 {
     type = "PriorityNone";
+    qDebug() <<type;
 }
 
 void MainWindow::on_Priority_clicked()
 {
    type= "Priority";
+   qDebug() << type;
 }
 
 void MainWindow::on_SJF_Non_clicked()
 {
     type = "SJF_Non";
+    qDebug() << type;
 }
 
 
 void MainWindow::on_SJF_Prim_clicked()
 {
     type = "SJF_Prim";
+    qDebug() <<type;
 }
 
 
 void MainWindow::on_Priority_Prim_clicked()
 {
     type = "Priority_Prim";
+    qDebug() << type;
 }
 
 
@@ -353,5 +376,35 @@ void MainWindow::on_pushButton_2_clicked()
 }
 void MainWindow::on_pushButton_3_clicked()
 {
+
+}
+
+void MainWindow::on_NewBtn_clicked()
+{
+   //Whenever we want to start new test we need to first clear the old data exept [ Type ]
+    process.resize(0);   //Index[1]
+    BurstTime.resize(0);     //Index[1]
+    ArrivalTime.resize(0);  //Index[1]
+    TurnAroundTime.resize(0);
+    WaitingTime.resize(0);
+    Gap.resize(0);
+    StartingTime.resize(0);
+    Priority.resize(0);
+    AvgWaitingTime = 0 ;
+    AvgTurnAroundTime = 0;
+    Q = 0;      // RoundRobin
+    auto var =  ui->Input->findChild<QLineEdit*>("lineEdit_Dep");
+    var->setEnabled(true);
+
+    // Delete The last Gantt Chart
+    foreach(QWidget* ptr , ToBeDeleted  )
+    {
+         ui->GanttChartLayOut->removeWidget(ptr);
+         delete ptr;
+    }
+    ToBeDeleted.resize(0);
+    // Monitor to the first page again
+
+     ui->tabs->setCurrentIndex(0);
 
 }

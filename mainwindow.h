@@ -46,6 +46,8 @@ private slots:
 
     void on_Priority_Prim_clicked();
 
+    void on_NewBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -63,6 +65,8 @@ private:
     float AvgWaitingTime;
     float AvgTurnAroundTime;
     int Q;      // RoundRobin
+
+    QVector<QWidget*>ToBeDeleted;
 
 };
 #endif // MAINWINDOW_H

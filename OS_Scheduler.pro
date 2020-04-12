@@ -19,6 +19,7 @@ SOURCES += \
     fcfs.cpp \
     main.cpp \
     mainwindow.cpp \
+    priority_prim.cpp \
     prioritynone.cpp \
     roundrobin.cpp \
     sjf_nonprim.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
 HEADERS += \
     fcfs.h \
     mainwindow.h \
+    priority_prim.h \
     prioritynone.h \
     roundrobin.h \
     sjf_nonprim.h \
