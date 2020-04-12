@@ -10,6 +10,7 @@
 #include "prioritynone.h"
 #include "sjf_nonprim.h"
 #include "roundrobin.h"
+#include "srtf.h"
 
 /* ---------------------------------------------------- */
 
@@ -51,7 +52,7 @@ void MainWindow::Display()
 
             // Widget to set Width and Height
             auto wid = new QWidget();
-            wid->setFixedWidth((Gap[i]*10)+5);
+            wid->setFixedWidth((Gap[i]*10)+10);
             wid->setLayout(box);
 
            ui->GanttChartLayOut->setAlignment(Qt::AlignHCenter);
@@ -78,7 +79,7 @@ void MainWindow::Display()
 
             // Widget to set Width and Height
             auto wid = new QWidget();
-            wid->setFixedWidth((BurstTime[i]*10)+5);
+            wid->setFixedWidth((BurstTime[i]*10)+10);
             wid->setLayout(box);
 
            ui->GanttChartLayOut->setAlignment(Qt::AlignHCenter);
@@ -138,7 +139,7 @@ void MainWindow::on_ToIndex_1_clicked()
            ui->Input->findChild<QLabel*>("Dep_Label")->hide();
            ui->Input->findChild<QLineEdit*>("lineEdit_Dep")->hide();
       }
-    else if (type == "Priority")
+    else if (type == "Priority_Prim")
     {
              ui->tabs->setCurrentIndex(1);
              ui->Input->findChild<QLabel*>("Dep_Label")->setText("Priority ");
@@ -154,15 +155,14 @@ void MainWindow::on_ToIndex_1_clicked()
         type = "RoundRobin";
         ui->Input->findChild<QLabel*>("Dep_Label")->setText("Q ");
     }
-    else if(type == "SJF_Non")
+    else if(type == "SJF_Non" || type == "SJF_Prim")
     {
         ui->tabs->setCurrentIndex(1);
         ui->Input->findChild<QLabel*>("Dep_Label")->hide();
         ui->Input->findChild<QLineEdit*>("lineEdit_Dep")->hide();
     }
 }
-
-
+// Function to call the exact class based on the type
 void MainWindow::on_pushButton_ToIndex_2_clicked()
 {
     ui->tabs->setCurrentIndex(2);
@@ -174,7 +174,7 @@ void MainWindow::on_pushButton_ToIndex_2_clicked()
         FCFS::Gant_chart(process,ArrivalTime,BurstTime,size,StartingTime,Gap);
         Display();
     }
-    else if(type == "PriorityNone")
+    else if(type == "PriorityNone" )
     {
         PriorityNone::sort_process_nonpre(process,BurstTime, ArrivalTime, Priority, size);
         PriorityNone::calc_waiting_starting_gap(BurstTime, ArrivalTime, StartingTime, WaitingTime, Gap, size);
@@ -202,6 +202,21 @@ void MainWindow::on_pushButton_ToIndex_2_clicked()
        AvgTurnAroundTime = Round_Robin::AVG_TurnAround(process, Fixed_Process, ArrivalTime, BurstTime, StartingTime, size, Original_Size);
        Display();
     }
+    else if(type == "SJF_Prim")
+    {
+        QVector<SRTF_Process> sr;
+        SRTF(process,BurstTime,ArrivalTime,StartingTime,sr);
+        Gap = ArrivalTime;
+        AvgTurnAroundTime = SRTF_Turn_Around(sr);
+        AvgWaitingTime = SRTF_Waiting_time(sr);
+        qDebug() << AvgWaitingTime;
+        qDebug() << AvgTurnAroundTime;
+
+        Display();
+    }
+    else if (type == "Priority_Prim")
+    {
+    }
 
 }
 
@@ -219,7 +234,7 @@ void MainWindow::on_pushButton_Add_clicked()
     // Add Text Input to Vectors
     bool flag =  add_Input(Name->text(),Arrival->text(),total->text());
     //Add Optional Input
-   if(type == "PriorityNone" && flag)
+   if((type == "PriorityNone"|| type == "Priority_Prim" )&& flag)
    {
        foreach(QChar c ,var->text() )
        {

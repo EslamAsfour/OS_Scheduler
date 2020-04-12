@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>801</width>
+    <width>809</width>
     <height>600</height>
    </rect>
   </property>
@@ -231,6 +231,18 @@ border: 2px solid white;
               </widget>
              </item>
              <item>
+              <widget class="QRadioButton" name="Priority_Prim">
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Priority Prim</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QRadioButton" name="SJF_Non">
                <property name="font">
                 <font>
@@ -240,6 +252,18 @@ border: 2px solid white;
                </property>
                <property name="text">
                 <string>SJF NonPrim</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="SJF_Prim">
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>SJF Prim</string>
                </property>
               </widget>
              </item>

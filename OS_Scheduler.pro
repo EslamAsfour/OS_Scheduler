@@ -29,7 +29,8 @@ HEADERS += \
     mainwindow.h \
     prioritynone.h \
     roundrobin.h \
-    sjf_nonprim.h
+    sjf_nonprim.h \
+    srtf.h
 
 FORMS += \
     mainwindow.ui
