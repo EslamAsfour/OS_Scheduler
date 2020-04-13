@@ -8,10 +8,9 @@ bool cmp(SRTF_Process A, SRTF_Process B) {
         return A.at < B.at;
 }
 
-
 void SRTF_Gantt_Chart(QVector<SRTF_Process> &sr, QVector<QString> &ids)
 {
-    float time = 0; int flag = 0, num = sr.size();
+    int time = 0, flag = 0, num = sr.size();
     while (flag != 1)
     {
         flag = 1;
@@ -27,10 +26,12 @@ void SRTF_Gantt_Chart(QVector<SRTF_Process> &sr, QVector<QString> &ids)
                 if (sr[i].rmt == 0) {
                     num--;
                 }
+
                 for (int j = 0; j < sr.size(); j++) {
                     if (j != i && sr[j].at <= time && sr[j].rmt > 0) {
                         sr[j].wt++;
                     }
+
                 }
                 break;
             }
@@ -42,37 +43,37 @@ void SRTF_Gantt_Chart(QVector<SRTF_Process> &sr, QVector<QString> &ids)
                 if (sr[j].at <= time && sr[j].rmt > 0) {
                     sr[j].wt++;
                 }
+
             }
+
         }
         time++;
     }
     //cout << "the processes take " << time-1 << endl;
-}
 
+}
 
 
 float SRTF_Waiting_time(QVector<SRTF_Process> &sr) {
 
-    float total = 0;
-    for (int i = 0; i < sr.size(); i++)
-    {
+    int total = 0;
+    for (int i = 0; i < sr.size(); i++) {
+
         total += sr[i].wt;
     }
     //cout<<"avg waiting time" << (1.0*total / sr.size())<<endl;
-    return (1.0*total / sr.size());
+    return ((1.0*total / sr.size()) / 100);
 }
-
 
 
 
 float SRTF_Turn_Around(QVector<SRTF_Process> &sr) {
 
-    float total = 0;
+    int total = 0;
     for (int i = 0; i < sr.size(); i++) {
-
         total += sr[i].wt + sr[i].bt;
     }
-    return (1.0*total / sr.size());
+    return ((1.0*total / sr.size()) / 100);
 }
 
 
@@ -83,14 +84,15 @@ void SRTF(QVector<QString>&id, QVector<float>&burst, QVector<float>&arival, QVec
 
     for (int i = 0; i < id.size(); i++) {
 
-        v.push_back(SRTF_Process(id[i], burst[i], arival[i]));
+        v.push_back(SRTF_Process(id[i], burst[i] * 100, arival[i] * 100));
     }
     id.clear();
     burst.clear();
     arival.clear();
+
     qSort(v.begin(), v.end(), cmp);
     SRTF_Gantt_Chart(v, time_line);
-    float  gap = 0, time = 0;
+    int  gap = 0, time = 0;
     QString lastid = time_line[0];
 
     time_line.push_back("-1");
@@ -107,16 +109,16 @@ void SRTF(QVector<QString>&id, QVector<float>&burst, QVector<float>&arival, QVec
         else if (time_line[i] != lastid) {
             if (lastid != "-1" && time_line[i] != "-1") {
                 id.push_back(lastid);
-                burst.push_back(time);
-                arival.push_back(gap);
+                burst.push_back(1.0*time / 100);
+                arival.push_back(1.0*gap / 100);
                 lastid = time_line[i];
                 time = 1;
                 gap = 0;
             }
             else if (lastid != "-1" && time_line[i] == "-1") {
                 id.push_back(lastid);
-                burst.push_back(time);
-                arival.push_back(gap);
+                burst.push_back(1.0*time / 100);
+                arival.push_back(1.0*gap / 100);
                 lastid = time_line[i];
                 time = 0;
                 gap = 1;
@@ -125,7 +127,15 @@ void SRTF(QVector<QString>&id, QVector<float>&burst, QVector<float>&arival, QVec
                 lastid = time_line[i];
                 time = 1;
             }
+
         }
+
+
+
+
+
+
+
     }
     float sta = 0;
     for (int i = 0; i < burst.size(); i++) {
@@ -133,4 +143,12 @@ void SRTF(QVector<QString>&id, QVector<float>&burst, QVector<float>&arival, QVec
         start.push_back(sta);
         sta += burst[i];
     }
+
+
+
+
+
+
+
+
 }

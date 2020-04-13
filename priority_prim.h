@@ -8,16 +8,18 @@
 
 
 
-struct priority_Preemptive {
+struct priority_Preemptive
+{
     QString id; // Process ID
-    float bt; // Burst Time
-    float at; // Arrival Time
-    float rmt; // remaning time
-    float wt; // waiting time
+    int bt; // Burst Time
+    int at; // Arrival Time
+    int rmt; // remaning time
+    int wt; // waiting time
     int pr; //priority
 
 
-    priority_Preemptive(QString i, float b, float a, int c) {
+    priority_Preemptive(QString i, int b, int a, int c)
+    {
         id = i;
         bt = b;
         at = a;
