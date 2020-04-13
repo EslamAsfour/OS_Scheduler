@@ -10,7 +10,7 @@ bool cmp(priority_Preemptive A, priority_Preemptive B) {
 
 void priority_pree_Gantt_Chart(QVector<priority_Preemptive> &sr, QVector<QString>&ids)
 {
-    int time = 0, flag = 0, num = sr.size();
+    float time = 0; int flag = 0; int num = sr.size();
     while (flag != 1)
     {
         flag = 1;
@@ -51,7 +51,7 @@ void priority_pree_Gantt_Chart(QVector<priority_Preemptive> &sr, QVector<QString
 
 float priority_pree_Waiting_time(QVector<priority_Preemptive> &sr) {
 
-    int total = 0;
+    float total = 0;
     for (int i = 0; i < sr.size(); i++) {
 
         total += sr[i].wt;
@@ -66,7 +66,7 @@ float priority_pree_Waiting_time(QVector<priority_Preemptive> &sr) {
 
 float priority_pree_Turn_Around(QVector<priority_Preemptive> &sr) {
 
-    int total = 0;
+    float total = 0;
     for (int i = 0; i < sr.size(); i++) {
 
         total += sr[i].wt + sr[i].bt;
@@ -79,7 +79,7 @@ float priority_pree_Turn_Around(QVector<priority_Preemptive> &sr) {
     return (1.0*total / sr.size());
 }
 
-void priority_pree(QVector<QString>&id, QVector<int>&burst, QVector<int>&arrival, QVector<int>&priority, QVector<int> &start, QVector<priority_Preemptive> &v) {
+void priority_pree(QVector<QString>&id, QVector<float>&burst, QVector<float>&arrival, QVector<float> &start, QVector<int>&priority, QVector<priority_Preemptive> &v) {
     QVector<QString>time_line;
     //to put the input in SRFT QVector
 
@@ -93,7 +93,7 @@ void priority_pree(QVector<QString>&id, QVector<int>&burst, QVector<int>&arrival
     qSort(v.begin(), v.end(), cmp);
     priority_pree_Gantt_Chart(v, time_line);
     QString lastid = time_line[0];
-    int gap = 0, time = 0;
+    float gap = 0, time = 0;
 
     time_line.push_back("-1");
     for (int i = 0; i < time_line.size(); i++)
@@ -129,7 +129,7 @@ void priority_pree(QVector<QString>&id, QVector<int>&burst, QVector<int>&arrival
             }
         }
     }
-    int sta = 0;
+    float sta = 0;
     for (int i = 0; i < burst.size(); i++) {
         sta += arrival[i];
         start.push_back(sta);

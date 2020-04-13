@@ -11,9 +11,9 @@
 class SJF_NonPrim
 {
 
- public:   void static sort_process_sjf_nonpre(QVector <QString> &proc_name , QVector <int> &bt , QVector <int> &arr , int &size) {
+ public:   void static sort_process_sjf_nonpre(QVector <QString> &proc_name , QVector <float> &bt , QVector <float> &arr , int &size) {
 
-            int temp , index;
+            float temp ; int index;
             QString temp_str;
 
             for (int i = 0; i < size ; i++) {

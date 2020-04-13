@@ -21,7 +21,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->tabs->setCurrentIndex(0);
-
 }
 
 MainWindow::~MainWindow()
@@ -31,7 +30,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::Display()
 {
-
     for(int i = 0 ; i < process.length(); i++)
     {
         if(Gap[i] > 0 )
@@ -96,13 +94,13 @@ void MainWindow::Display()
 
 bool MainWindow::add_Input(QString proc, QString Arr, QString Burst)
 {
-     process.push_back(proc);
+
      bool ArrFlag = true;
      bool BurFlag = true;
     // Check If input is number as it should Be Or we output an error msg
      foreach(QChar c , Arr )
     {
-        if(!(c.isNumber()))
+        if(!(c.isNumber()) && c != '.')
         {
             ArrFlag = false;
             break;
@@ -110,7 +108,7 @@ bool MainWindow::add_Input(QString proc, QString Arr, QString Burst)
     }
     foreach(QChar c , Burst )
     {
-        if(!(c.isNumber()))
+        if(!(c.isNumber()) && c != '.')
         {
             BurFlag = false;
             break;
@@ -118,8 +116,9 @@ bool MainWindow::add_Input(QString proc, QString Arr, QString Burst)
     }
     if(ArrFlag && BurFlag)
     {
-        ArrivalTime.push_back( Arr.toInt());
-        BurstTime.push_back(Burst.toInt());
+        process.push_back(proc);
+        ArrivalTime.push_back( Arr.toFloat());
+        BurstTime.push_back(Burst.toFloat());
         return true;
     }
     else            // One of them or both are wronge input
@@ -128,8 +127,6 @@ bool MainWindow::add_Input(QString proc, QString Arr, QString Burst)
         QMessageBox::warning(this,"Wronge Input",msg);
         return false;
     }
-
-
 }
 
 
@@ -175,13 +172,28 @@ void MainWindow::on_ToIndex_1_clicked()
 void MainWindow::on_pushButton_ToIndex_2_clicked()
 {
 
+    process.shrink_to_fit();   //Index[1]
+    BurstTime.shrink_to_fit();     //Index[1]
+    ArrivalTime.shrink_to_fit();   //Index[1]
+    TurnAroundTime.shrink_to_fit();
+    WaitingTime.shrink_to_fit();
+    Gap.shrink_to_fit();
+    StartingTime.shrink_to_fit();
+    Priority.shrink_to_fit();
     ui->tabs->setCurrentIndex(2);
     int size = process.size();
-
+     qDebug() <<  "Check before If";
+     for(int i = 0 ; i < process.size() ; i++)
+     {
+          qDebug() <<  process[i] << ArrivalTime[i] << BurstTime[i];
+     }
+     qDebug() << process.size();
     if(type == "FCFS")
     {
         FCFS::find_total_average_time(process,ArrivalTime,BurstTime,size,WaitingTime,TurnAroundTime,AvgWaitingTime,AvgTurnAroundTime);
+        qDebug() <<  "Check After first Func";
         FCFS::Gant_chart(process,ArrivalTime,BurstTime,size,StartingTime,Gap);
+          qDebug() <<  "Check before Dispaly";
         Display();
     }
     else if(type == "PriorityNone" )
@@ -227,7 +239,7 @@ void MainWindow::on_pushButton_ToIndex_2_clicked()
     else if (type == "Priority_Prim")
     {
         QVector<priority_Preemptive> sr;
-        priority_pree(process, BurstTime, ArrivalTime, Priority, StartingTime, sr);
+        priority_pree(process,BurstTime,ArrivalTime,StartingTime,Priority,sr);
         Gap = ArrivalTime;
         AvgTurnAroundTime = priority_pree_Turn_Around(sr);
         AvgWaitingTime = priority_pree_Waiting_time(sr);
@@ -395,7 +407,7 @@ void MainWindow::on_NewBtn_clicked()
     Q = 0;      // RoundRobin
     auto var =  ui->Input->findChild<QLineEdit*>("lineEdit_Dep");
     var->setEnabled(true);
-
+    var->setText("");
     // Delete The last Gantt Chart
     foreach(QWidget* ptr , ToBeDeleted  )
     {

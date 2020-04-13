@@ -10,14 +10,14 @@
 
 struct priority_Preemptive {
     QString id; // Process ID
-    int bt; // Burst Time
-    int at; // Arrival Time
-    int rmt; // remaning time
-    int wt; // waiting time
+    float bt; // Burst Time
+    float at; // Arrival Time
+    float rmt; // remaning time
+    float wt; // waiting time
     int pr; //priority
 
 
-    priority_Preemptive(QString i, int b, int a, int c) {
+    priority_Preemptive(QString i, float b, float a, int c) {
         id = i;
         bt = b;
         at = a;
@@ -29,9 +29,9 @@ struct priority_Preemptive {
 
     }
 };
-void priority_pree(QVector<QString>&id, QVector<int>&burst, QVector<int>&arrival, QVector<int> &start, QVector<int>&priority, QVector<priority_Preemptive> &v);
+void priority_pree(QVector<QString>&id, QVector<float>&burst, QVector<float>&arrival, QVector<float> &start, QVector<int>&priority, QVector<priority_Preemptive> &v);
 
-void priority_pree_Gantt_Chart(QVector<priority_Preemptive> &sr, QVector<int>&ids);
+void priority_pree_Gantt_Chart(QVector<priority_Preemptive> &sr, QVector<QString>&ids);
 
 float priority_pree_Waiting_time(QVector<priority_Preemptive> &sr);
 float priority_pree_Turn_Around(QVector<priority_Preemptive> &sr);

@@ -7,9 +7,9 @@
 
 class FCFS {
 
-public:static void Sort_arriaval_time(QVector <QString> &Process, QVector <int>&ArrivalTime, QVector <int> &BurstTime, int &size) {
-    int temp_at;
-    int temp_bt;
+public:static void Sort_arriaval_time(QVector <QString> &Process, QVector <float>&ArrivalTime, QVector <float> &BurstTime, int &size) {
+    float temp_at;
+    float temp_bt;
     QString temp_Process;
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++)
@@ -32,9 +32,9 @@ public:static void Sort_arriaval_time(QVector <QString> &Process, QVector <int>&
     }
 }
 
-public:static void find_waiting_time(QVector <QString> &Process, QVector <int>&ArrivalTime, QVector <int> &BurstTime, int &size, QVector <int>&WaitingTime) {
+public:static void find_waiting_time(QVector <QString> &Process, QVector <float>&ArrivalTime, QVector <float> &BurstTime, int &size, QVector <float>&WaitingTime) {
     Sort_arriaval_time(Process, ArrivalTime, BurstTime, size);
-    int *service_time = new int[size];
+    float *service_time = new float[size];
     service_time[0] = 0;
     WaitingTime.resize(size); // change
     WaitingTime[0] = 0 ;
@@ -49,7 +49,7 @@ public:static void find_waiting_time(QVector <QString> &Process, QVector <int>&A
 
 }
 
-public:static void find_total_arround_time(QVector <QString> &Process, QVector <int>&ArrivalTime, QVector <int> &BurstTime, int &size, QVector <int>&WaitingTime, QVector <int>&TurnAroundTime) {
+public:static void find_total_arround_time(QVector <QString> &Process, QVector <float>&ArrivalTime, QVector <float> &BurstTime, int &size, QVector <float>&WaitingTime, QVector <float>&TurnAroundTime) {
     find_waiting_time(Process, ArrivalTime, BurstTime, size, WaitingTime);
     TurnAroundTime.resize(size);   //Change
     for (int i = 0; i < size; i++) {
@@ -57,11 +57,11 @@ public:static void find_total_arround_time(QVector <QString> &Process, QVector <
     }
 }
 
-public:static void find_total_average_time(QVector <QString> &Process, QVector <int>&ArrivalTime, QVector <int> &BurstTime, int size, QVector<int> &WaitingTime,
-    QVector<int> &TurnAroundTime, float &AvgWaitingTime, float &AvgTurnAround)  {
+public:static void find_total_average_time(QVector <QString> &Process, QVector <float>&ArrivalTime, QVector <float> &BurstTime, int size, QVector<float> &WaitingTime,
+    QVector<float> &TurnAroundTime, float &AvgWaitingTime, float &AvgTurnAround)  {
     int sumOfTurnAround = 0;
     find_total_arround_time(Process, ArrivalTime, BurstTime, size, WaitingTime, TurnAroundTime);
-    int sumOfWaitingTime = 0;
+    float sumOfWaitingTime = 0;
     find_waiting_time(Process, ArrivalTime, BurstTime, size, WaitingTime);
     for (int i = 0; i < size; i++)
     {
@@ -72,8 +72,8 @@ public:static void find_total_average_time(QVector <QString> &Process, QVector <
     AvgTurnAround = (float)sumOfTurnAround / (float)size;
 }
 
-public:static void Gant_chart(QVector <QString> &Process, QVector <int>&ArrivalTime, QVector <int> &BurstTime, int size,
-    QVector <int> &starting_time, QVector <int> &gap) {
+public:static void Gant_chart(QVector <QString> &Process, QVector <float>&ArrivalTime, QVector <float> &BurstTime, int size,
+    QVector <float> &starting_time, QVector <float> &gap) {
     gap.resize(size);
     starting_time.resize(size);
     for (int i = 0; i < size; i++) {

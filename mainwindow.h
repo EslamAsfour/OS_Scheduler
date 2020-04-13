@@ -54,12 +54,12 @@ private:
     QString type;           // First Input  From Index [0]
 
     QVector<QString> process;   //Index[1]
-    QVector<int> BurstTime;     //Index[1]
-    QVector<int> ArrivalTime;   //Index[1]
-    QVector<int> TurnAroundTime;
-    QVector<int> WaitingTime;
-    QVector<int> Gap;
-    QVector<int> StartingTime;
+    QVector<float> BurstTime;     //Index[1]
+    QVector<float> ArrivalTime;   //Index[1]
+    QVector<float> TurnAroundTime;
+    QVector<float> WaitingTime;
+    QVector<float> Gap;
+    QVector<float> StartingTime;
     QVector<int>Priority;
 
     float AvgWaitingTime;

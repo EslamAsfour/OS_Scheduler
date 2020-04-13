@@ -9,11 +9,11 @@ class PriorityNone
 
 public:
     //this function is for internal usage only , never mind.
-    int static bt_comparison(QVector <int> &v, int count) {
+    float static bt_comparison(QVector <float> &v, int count) {
 
         //note for me : this function is also used to calculate the starting time from previous burst time of processes.
 
-        int sum = 0;
+        float sum = 0;
         for (int i = 0; i < count; i++) {
             sum += v[i];
         }
@@ -23,9 +23,9 @@ public:
 
     //This function sort all processes names,burst time,arrival time and priority for non preemptive.
 
-    void static sort_process_nonpre(QVector <QString> &proc_name, QVector <int> &bt, QVector <int> &arr, QVector <int> &priority, int &size) {
+    void static sort_process_nonpre(QVector <QString> &proc_name, QVector <float> &bt, QVector <float> &arr, QVector <int> &priority, int &size) {
 
-        int temp, index;
+        float temp; int index;
         QString temp_str;
 
         for (int i = 0; i < size; i++) {
@@ -80,10 +80,10 @@ public:
             arr[i] = arr[index];
             arr[index] = temp;
 
-
-            temp = priority[i];
+            int temp2;
+            temp2 = priority[i];
             priority[i] = priority[index];
-            priority[index] = temp;
+            priority[index] = temp2;
         }
 
 
@@ -92,7 +92,7 @@ public:
 
     //this function calculates waiting time and starting time and gap for each process and stores them in QVectors.
 
-    void static calc_waiting_starting_gap(QVector <int> &bt, QVector <int> &arr, QVector <int> &starting, QVector <int> &waiting, QVector <int> &gap, int &size) {
+    void static calc_waiting_starting_gap(QVector <float> &bt, QVector <float> &arr, QVector <float> &starting, QVector <float> &waiting, QVector <float> &gap, int &size) {
         starting.resize(size);
         waiting.resize(size);
         gap.resize(size);
@@ -121,7 +121,7 @@ public:
 
     // this function simply return average turnaround time.
 
-    float static turnaround_avg(QVector <int> &bt, QVector <int> &waiting, int &size) {
+    float static turnaround_avg(QVector <float> &bt, QVector <float> &waiting, int &size) {
 
         float ta_avg = 0;
 
@@ -138,7 +138,7 @@ public:
 
     // this function simply return average waiting time.
 
-    float static waiting_avg(QVector <int> &waiting, int &size) {
+    float static waiting_avg(QVector <float> &waiting, int &size) {
         float avg = 0;
         for (int i = 0; i < size; i++) {
             avg += waiting[i];

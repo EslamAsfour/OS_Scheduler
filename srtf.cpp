@@ -11,7 +11,7 @@ bool cmp(SRTF_Process A, SRTF_Process B) {
 
 void SRTF_Gantt_Chart(QVector<SRTF_Process> &sr, QVector<QString> &ids)
 {
-    int time = 0, flag = 0, num = sr.size();
+    float time = 0; int flag = 0, num = sr.size();
     while (flag != 1)
     {
         flag = 1;
@@ -53,7 +53,7 @@ void SRTF_Gantt_Chart(QVector<SRTF_Process> &sr, QVector<QString> &ids)
 
 float SRTF_Waiting_time(QVector<SRTF_Process> &sr) {
 
-    int total = 0;
+    float total = 0;
     for (int i = 0; i < sr.size(); i++)
     {
         total += sr[i].wt;
@@ -67,7 +67,7 @@ float SRTF_Waiting_time(QVector<SRTF_Process> &sr) {
 
 float SRTF_Turn_Around(QVector<SRTF_Process> &sr) {
 
-    int total = 0;
+    float total = 0;
     for (int i = 0; i < sr.size(); i++) {
 
         total += sr[i].wt + sr[i].bt;
@@ -77,7 +77,7 @@ float SRTF_Turn_Around(QVector<SRTF_Process> &sr) {
 
 
 
-void SRTF(QVector<QString>&id, QVector<int>&burst, QVector<int>&arival, QVector<int> &start, QVector<SRTF_Process> &v) {
+void SRTF(QVector<QString>&id, QVector<float>&burst, QVector<float>&arival, QVector<float> &start, QVector<SRTF_Process> &v) {
     QVector<QString>time_line;
     //to put the input in SRFT QVector
 
@@ -90,7 +90,7 @@ void SRTF(QVector<QString>&id, QVector<int>&burst, QVector<int>&arival, QVector<
     arival.clear();
     qSort(v.begin(), v.end(), cmp);
     SRTF_Gantt_Chart(v, time_line);
-    int  gap = 0, time = 0;
+    float  gap = 0, time = 0;
     QString lastid = time_line[0];
 
     time_line.push_back("-1");
@@ -127,7 +127,7 @@ void SRTF(QVector<QString>&id, QVector<int>&burst, QVector<int>&arival, QVector<
             }
         }
     }
-    int sta = 0;
+    float sta = 0;
     for (int i = 0; i < burst.size(); i++) {
         sta += arival[i];
         start.push_back(sta);

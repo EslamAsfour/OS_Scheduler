@@ -5,7 +5,7 @@
 
 class Round_Robin {
 public:
-    static void erase(QVector <QString> &process, QVector <int>&ArrivalTime, QVector <int> &BurstTime, int &size, int i) {
+    static void erase(QVector <QString> &process, QVector <float>&ArrivalTime, QVector <float> &BurstTime, int &size, int i) {
         //function to erase one element from each QVector with index i
         for (int j = i; j<size - 1; j++)
         {
@@ -19,9 +19,9 @@ public:
         BurstTime.resize(size);
     }
 public:
-    static void sort_process(QVector <QString> &process, QVector <int>&ArrivalTime, QVector <int> &BurstTime, int &size) {
+    static void sort_process(QVector <QString> &process, QVector <float>&ArrivalTime, QVector <float> &BurstTime, int &size) {
         //function to sort processes according to arrival time.
-        int temp_int;
+        float temp_int;
         QString temp_process;
         for (int i = 0; i<size; i++) {
             for (int j = i; j<size; j++) {
@@ -43,16 +43,16 @@ public:
         }
     }
 public:
-    static void round_robin_editing(QVector <QString> &process, QVector <int>&ArrivalTime, QVector <int> &BurstTime, int &size, int Q) {
+    static void round_robin_editing(QVector <QString> &process, QVector <float>&ArrivalTime, QVector <float> &BurstTime, int &size, int Q) {
         int temp_size = 0, adder = 0;
         QVector <QString> rr_process;
-        QVector <int> rr_ArrivalTime;
-        QVector <int>  rr_BurstTime;
-        QVector <int>  rr_GapTime;
+        QVector <float> rr_ArrivalTime;
+        QVector <float>  rr_BurstTime;
+        QVector <float>  rr_GapTime;
         int  rr_size;
         //calculating new number of processes according to RR and resizing the new QVectors.
         for (int i = 0; i<size; i++) {
-            if (BurstTime[i] % Q == 0)
+            if ((int)BurstTime[i] % Q == 0)
             {
                 temp_size = temp_size + (BurstTime[i] / Q);
             }
@@ -66,7 +66,7 @@ public:
         rr_ArrivalTime.resize(rr_size);
         rr_BurstTime.resize(rr_size);
         //cutting the old processes accroding to the RR and placing them in the new QVectors
-        int j = 0, total_burst = 0;
+        int j = 0; float total_burst = 0;
         while (size >0) {
             for (int i = 0; i<size; i++) {
                 for (int k = 0; k<j; k++) {
@@ -84,7 +84,7 @@ public:
                 {
                     rr_BurstTime[j] = Q;
                     BurstTime[i] = BurstTime[i] - Q;
-                    if (BurstTime[i] == 0)
+                    if (BurstTime[i] == 0.0)
                     {
                         erase(process, ArrivalTime, BurstTime, size, i);
                         i--;
@@ -115,7 +115,7 @@ public:
 
     }
 public:
-    static void adding_starting_gap_time(QVector <QString> &process, QVector <int>&ArrivalTime, QVector <int> &BurstTime, QVector <int> &StartingTime, QVector <int> &GapTime, int &size)
+    static void adding_starting_gap_time(QVector <QString> &process, QVector <float>&ArrivalTime, QVector <float> &BurstTime, QVector <float> &StartingTime, QVector <float> &GapTime, int &size)
     {
         int temp = 0;
         //resizing new QVectors to the new number of processes after modifying them.
@@ -141,7 +141,7 @@ public:
 
         }
     }
-public: static void RR(QVector <QString> &process, QVector <int>&ArrivalTime, QVector <int> &BurstTime, QVector <int> &StartingTime, QVector <int> &GapTime, int &size, int Q) {
+public: static void RR(QVector <QString> &process, QVector <float>&ArrivalTime, QVector <float> &BurstTime, QVector <float> &StartingTime, QVector <float> &GapTime, int &size, int Q) {
     //sorting processes according to arrival time.
     sort_process(process, ArrivalTime, BurstTime, size);
     //making RR slices.
@@ -149,18 +149,18 @@ public: static void RR(QVector <QString> &process, QVector <int>&ArrivalTime, QV
     //adding starting and gap times to the processes.
     adding_starting_gap_time(process, ArrivalTime, BurstTime, StartingTime, GapTime, size);
 }
-public: static float AVG_waiting(QVector <int>&ArrivalTime, QVector <int> &StartingTime, int &size) {
+public: static float AVG_waiting(QVector <float>&ArrivalTime, QVector <float> &StartingTime, int &size) {
 
-    int total_wait = 0;
+    float total_wait = 0;
     for (int i = 0; i<size; i++) {
         total_wait += StartingTime[i] - ArrivalTime[i];
     }
     return ((float)total_wait / (float)size);
 }
-public: static float AVG_TurnAround(QVector <QString> &process, QVector <QString> &old_process, QVector <int>&ArrivalTime, QVector <int> &BurstTime, QVector <int> &StartingTime, int &size, int &old_size) {
+public: static float AVG_TurnAround(QVector <QString> &process, QVector <QString> &old_process, QVector <float>&ArrivalTime, QVector <float> &BurstTime, QVector <float> &StartingTime, int &size, int &old_size) {
 
-    QVector <int> turn_around(old_size);
-    int turn_aroundd = 0, sum = 0;
+    QVector <float> turn_around(old_size);
+    float turn_aroundd = 0, sum = 0;
     for (int i = 0; i<old_size; i++) {
         for (int j = 0; j<size; j++) {
             if (old_process[i] == process[j])
