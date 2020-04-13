@@ -32,8 +32,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::Display()
 {
+    float sum ;
+
     for(int i = 0 ; i < process.length(); i++)
     {
+        sum = 0;
         if(Gap[i] > 0 )
         {
             // Vertical Box
@@ -85,8 +88,34 @@ void MainWindow::Display()
            ui->GanttChartLayOut->addWidget(wid,0);
            ui->label_FillTurnAround->setText(QString::number(AvgTurnAroundTime));
            ui->label_FillWaitingTime->setText(QString::number(AvgWaitingTime));
-
+           sum = BurstTime[i]+ StartingTime[i];
     }
+    // Vertical Box
+    auto box = new QVBoxLayout();
+    box->setSpacing(0);
+    box->setMargin(0);
+    // Add Button and label
+    auto item = new QPushButton();
+    item->setStyleSheet("background-color: rgba(255, 255, 255, 0); height : 35px ; width : 0px; font-size : 12px;font : bold ");
+    auto timeDiff = new QLabel(QString::number(sum));
+
+    box->addWidget(item);
+    box->addWidget(timeDiff);
+    box->setAlignment(Qt::AlignLeft);
+    box->setAlignment(Qt::AlignTop);
+
+    // Widget to set Width and Height
+    auto wid = new QWidget();
+    wid->setFixedWidth(15);
+    wid->setLayout(box);
+    ToBeDeleted.push_back(wid);
+
+   ui->GanttChartLayOut->setAlignment(Qt::AlignHCenter);
+   ui->GanttChartLayOut->addWidget(wid,0);
+   ui->label_FillTurnAround->setText(QString::number(AvgTurnAroundTime));
+   ui->label_FillWaitingTime->setText(QString::number(AvgWaitingTime));
+
+
 }
 
 bool MainWindow::add_Input(QString proc, QString Arr, QString Burst)
