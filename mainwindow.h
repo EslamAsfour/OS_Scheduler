@@ -61,6 +61,7 @@ private:
     QVector<float> Gap;
     QVector<float> StartingTime;
     QVector<int>Priority;
+    bool RoundFlag;
 
     float AvgWaitingTime;
     float AvgTurnAroundTime;

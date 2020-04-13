@@ -20,7 +20,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    RoundFlag = false;
     ui->tabs->setCurrentIndex(0);
+
 }
 
 MainWindow::~MainWindow()
@@ -59,15 +61,10 @@ void MainWindow::Display()
            ui->GanttChartLayOut->setAlignment(Qt::AlignHCenter);
            ui->GanttChartLayOut->addWidget(wid,0);
         }
-
-
             // Vertical Box
             auto box = new QVBoxLayout();
             box->setSpacing(0);
             box->setMargin(0);
-
-
-
             // Add Button and label
             auto item = new QPushButton(process[i]);
             item->setStyleSheet("color : red; height : 35px; font-size : 12px;font : bold ");
@@ -97,6 +94,11 @@ bool MainWindow::add_Input(QString proc, QString Arr, QString Burst)
 
      bool ArrFlag = true;
      bool BurFlag = true;
+     if(Arr.isEmpty() || Burst.isEmpty() || proc.isEmpty() )
+        {
+             ArrFlag = false;
+             BurFlag = false;
+        }
     // Check If input is number as it should Be Or we output an error msg
      foreach(QChar c , Arr )
     {
@@ -171,7 +173,12 @@ void MainWindow::on_ToIndex_1_clicked()
 // Function to call the exact class based on the type
 void MainWindow::on_pushButton_ToIndex_2_clicked()
 {
-
+    if(RoundFlag == false && type == "RoundRobin")
+    {
+        QString msg = "You Didn't Choose a Value for Q so we will use our default Value   Q = 5 ";
+        Q=5;
+        QMessageBox::warning(this,"Wronge Input",msg);
+    }
     process.shrink_to_fit();   //Index[1]
     BurstTime.shrink_to_fit();     //Index[1]
     ArrivalTime.shrink_to_fit();   //Index[1]
@@ -250,6 +257,7 @@ void MainWindow::on_pushButton_ToIndex_2_clicked()
 
 void MainWindow::on_pushButton_Add_clicked()
 {
+
     // Get Child Pointer  by the child id
     auto Name =  ui->Input->findChild<QLineEdit*>("line_Proc_Name");
     auto Arrival =  ui->Input->findChild<QLineEdit*>("lineArrTime");
@@ -264,6 +272,8 @@ void MainWindow::on_pushButton_Add_clicked()
     //Add Optional Input
    if((type == "PriorityNone"|| type == "Priority_Prim" )&& flag)
    {
+       if(var->text().isEmpty())
+           flag = false;
        foreach(QChar c ,var->text() )
        {
            if(!(c.isNumber()))
@@ -304,6 +314,7 @@ void MainWindow::on_pushButton_Add_clicked()
             {
                 Q= var->text().toInt();
                 var->setEnabled(false);
+                RoundFlag = true;
             }
             else
             {
@@ -393,6 +404,7 @@ void MainWindow::on_pushButton_3_clicked()
 
 void MainWindow::on_NewBtn_clicked()
 {
+    RoundFlag = false;
    //Whenever we want to start new test we need to first clear the old data exept [ Type ]
     process.resize(0);   //Index[1]
     BurstTime.resize(0);     //Index[1]
