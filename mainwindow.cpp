@@ -234,7 +234,7 @@ void MainWindow::on_pushButton_ToIndex_2_clicked()
     }
     else if(type == "PriorityNone" )
     {
-        PriorityNone::sort_process_nonpre(process,BurstTime, ArrivalTime, Priority, size);
+        PriorityNone::sort_process_nonpre(process,BurstTime, ArrivalTime, Priority, size,Gap);
         PriorityNone::calc_waiting_starting_gap(BurstTime, ArrivalTime, StartingTime, WaitingTime, Gap, size);
         AvgWaitingTime = PriorityNone::waiting_avg(WaitingTime, size);
         AvgTurnAroundTime = PriorityNone::turnaround_avg(BurstTime, WaitingTime, size);
@@ -242,7 +242,7 @@ void MainWindow::on_pushButton_ToIndex_2_clicked()
     }
     else if (type == "SJF_Non")
     {
-        SJF_NonPrim::sort_process_sjf_nonpre(process,BurstTime, ArrivalTime, size);
+        SJF_NonPrim::sort_process_sjf_nonpre(process,BurstTime, ArrivalTime, size,Gap);
         PriorityNone::calc_waiting_starting_gap(BurstTime, ArrivalTime, StartingTime, WaitingTime, Gap, size);
         AvgWaitingTime = PriorityNone::waiting_avg(WaitingTime, size);
         AvgTurnAroundTime = PriorityNone::turnaround_avg(BurstTime, WaitingTime, size);

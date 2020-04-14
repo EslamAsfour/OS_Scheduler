@@ -11,11 +11,11 @@
 class SJF_NonPrim
 {
 
- public:   void static sort_process_sjf_nonpre(QVector <QString> &proc_name , QVector <float> &bt , QVector <float> &arr , int &size) {
+ public:   void static sort_process_sjf_nonpre(QVector <QString> &proc_name , QVector <float> &bt , QVector <float> &arr , int &size, QVector <float> &gap) {
 
             float temp ; int index;
             QString temp_str;
-
+            gap.resize(proc_name.size());
             for (int i = 0; i < size ; i++) {
 
                 index = i;
@@ -41,7 +41,7 @@ class SJF_NonPrim
                 else {
 
                     for (int j = i + 1; j < size; j++) {
-                        if (arr[j] <= PriorityNone::bt_comparison(bt,index) && bt[j] < bt[index]) {
+                        if (arr[j] <= PriorityNone::bt_comparison(bt,index,gap) && bt[j] < bt[index]) {
 
                             index = j;
 
